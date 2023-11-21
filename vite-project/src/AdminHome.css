@@ -1,0 +1,31 @@
+.admin-home {
+  display: flex;
+}
+
+.sidebar {
+  flex: 0 0 200px; /* Adjust width as needed */
+  background-color: #f4f4f4; /* Light grey background */
+  padding: 20px;
+  height: 100vh; /* Full height */
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #333; /* Dark background for buttons */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.sidebar button:hover {
+  background-color: #555; /* Slightly lighter on hover */
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}

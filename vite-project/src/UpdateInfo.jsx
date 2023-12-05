@@ -1,107 +1,157 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const UpdateInfo = () => {
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
+
+function UpdateInfo() {
+  const [nurse, setNurse] = useState({
+    firstName: "",
+    lastName: "",
+    phone: "",
+    address: "",
+  });
   const navigate = useNavigate();
 
-  // Retrieve the nurse ID from localStorage
-  const nurseId = localStorage.getItem("nurseId");
+  useEffect(() => {
+    const nurseId = localStorage.getItem("nurseID");
+    if (!nurseId) {
+      alert("Nurse ID not found. Please log in again.");
+      navigate("/login"); // redirect to login
+      return;
+    }
+
+  async function fetchNurseInfo() {
+    try {
+      const response = await fetch(`http://localhost:3000/nurses/${nurseId}`);
+      const data = await response.json();
+      if (response.ok) {
+        setNurse({
+          ...nurse,
+          firstName: data.f_name,
+          lastName: data.l_name,
+          phone: data.phone,
+          address: data.address,
+        });
+      } else {
+        // Handle errors here
+        console.error("Failed to fetch nurse information");
+      }
+    } catch (error) {
+      console.error("Error fetching nurse information:", error);
+      // Handle error, such as showing a message to the user
+    }
+  };
+
+    fetchNurseInfo();
+  }, [navigate]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNurse((prevNurse) => ({ ...prevNurse, [name]: value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const nurseId = localStorage.getItem("nurseID");
+
     try {
       const response = await fetch(`http://localhost:3000/nurses/${nurseId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ phone, address }),
+        body: JSON.stringify({
+          phone: nurse.phone,
+          address: nurse.address,
+        }),
       });
 
       if (response.ok) {
-        const updatedNurseData = await response.json();
-        setNurseData((prevState) => ({ ...prevState, ...updatedNurseData }));
         alert("Information updated successfully!");
-        navigate("/nurse-home"); // or wherever you wish to redirect after the update
+        navigate("/nurse-home"); // redirect to the nurse home page
       } else {
         const errorData = await response.json();
         alert(`Failed to update information: ${errorData.message}`);
       }
     } catch (error) {
-      alert(`Error: ${error.message}`);
+      alert(`Error updating information: ${error.message}`);
+      console.error(error);
     }
   };
 
+    const containerStyle = {
+      maxWidth: "500px",
+      margin: "20px auto",
+      padding: "20px",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      backgroundColor: "#fff", // Adjust as needed
+      borderRadius: "8px", // Optional for rounded corners
+      boxShadow: "0 0 10px rgba(0,0,0,0.1)", // Optional for shadow
+    };
+
+    const labelStyle = {
+      display: "block",
+      marginBottom: "10px",
+      marginTop: "20px", // Add top margin for spacing
+    };
+
+
+  const inputStyle = {
+    width: "100%",
+    padding: "10px",
+    marginBottom: "20px",
+    border: "1px solid #ccc",
+    borderRadius: "4px",
+  };
+
+     const buttonStyle = {
+       padding: "10px 15px",
+       marginTop: "20px",
+       backgroundColor: "#4CAF50",
+       color: "white",
+       border: "none",
+       borderRadius: "4px",
+       cursor: "pointer",
+       width: "200px",
+       fontSize: "16px",
+     };
+
   return (
-    <div style={styles.container}>
-      <h2>Update Your Information</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <label htmlFor="phone" style={styles.label}>
-          Phone Number:
-        </label>
-        <input
-          type="tel"
-          id="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <label htmlFor="address" style={styles.label}>
-          Address:
-        </label>
-        <input
-          type="text"
-          id="address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <button type="submit" style={styles.button}>
+    <div style={containerStyle}>
+      <h2 style={{ margin: "20px 0" }}>Update Your Information</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label style={labelStyle}>
+            Phone Number:
+            <input
+              type="tel"
+              name="phone"
+              style={inputStyle}
+              value={nurse.phone}
+              onChange={handleInputChange}
+            />
+          </label>
+        </div>
+        <div>
+          <label style={labelStyle}>
+            Address:
+            <input
+              type="text"
+              name="address"
+              style={inputStyle}
+              value={nurse.address}
+              onChange={handleInputChange}
+            />
+          </label>
+        </div>
+        <button type="submit" style={buttonStyle}>
+          {" "}
           Update Info
         </button>
       </form>
     </div>
   );
-};
-
-// You can move these styles to a CSS file if preferred
-const styles = {
-  container: {
-    maxWidth: "500px",
-    margin: "0 auto",
-    padding: "20px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-  },
-  label: {
-    marginBottom: "5px",
-  },
-  input: {
-    marginBottom: "20px",
-    padding: "10px",
-    fontSize: "16px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-  },
-  button: {
-    padding: "10px 15px",
-    fontSize: "16px",
-    backgroundColor: "#4CAF50",
-    color: "white",
-    border: "none",
-    borderRadius: "5px",
-    cursor: "pointer",
-  },
 };
 
 export default UpdateInfo;

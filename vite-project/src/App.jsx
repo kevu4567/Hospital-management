@@ -6,20 +6,22 @@ import AdminHome from "./AdminHome";
 import RegisterNurse from "./RegisterNurse";
 import UpdateNurse from "./UpdateNurse";
 import DeleteNurse from "./DeleteNurse";
+import AddVaccine from "./AddVaccine";
+import UpdateVaccine from "./UpdateVaccine";
+import AdminNurse from "./AdminNurse";
+import AdminVaccine from "./AdminVaccine";
 import NurseLogin from "./NurseLogin"; // Import the NurseLogin component
 import NurseHome from "./NurseHome";
 import UpdateInfo from "./UpdateInfo";
+import ScheduleTime from "./ScheduleTime";
+import NurseVaccine from "./NurseVaccine";
 import PatientLogin from "./PatientLogin"; // Import the PatientLogin component
+import PatientHome from "./PatientHome";
+import SelectTimeslot from "./SelectTimeslot";
+import UpdatePatientInfo from "./UpdatePatientInfo";
 import Signup from './Signup'; // Import the Signup component
 
 function App() {
-  useEffect(() => {
-    fetch("http://localhost:3000/Vaccine")
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.log(err));
-  }, []);
-
   const handleClick = (buttonName) => {
     console.log(`Button ${buttonName} clicked!`);
     // You can add more functionality for button click here
@@ -55,10 +57,19 @@ function App() {
         <Route path="/register-nurse" element={<RegisterNurse />} />
         <Route path="/update-nurse" element={<UpdateNurse />} />
         <Route path="/delete-nurse" element={<DeleteNurse />} />
+        <Route path="/add-vaccine" element={<AddVaccine />} />
+        <Route path="/update-vaccine" element={<UpdateVaccine />} />
+        <Route path="/admin-nurse" element={<AdminNurse />} />
+        <Route path="/view-patient" element={<AdminVaccine />} />
         <Route path="/nurse-login" element={<NurseLogin />} />
         <Route path="/nurse-home" element={<NurseHome />} />
         <Route path="/update-info" element={<UpdateInfo />} />
+        <Route path="/schedule-time" element={<ScheduleTime />} />
+        <Route path="/nurse-vaccine" element={<NurseVaccine />} />
         <Route path="/patient-login" element={<PatientLogin />} />
+        <Route path="/patient-home" element={<PatientHome />} />
+        <Route path="/select-timeslot" element={<SelectTimeslot />} />
+        <Route path="/update-patient-info" element={<UpdatePatientInfo />} />
         <Route path="/signup" element={<Signup />} />
       </Routes>
     </Router>

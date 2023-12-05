@@ -3,7 +3,9 @@
   display: flex;
   flex-direction: column;
   align-items: start; /* Align to the left */
-  padding: 150px; /* Add space around the buttons */
+  padding: 25px; /* Add space around the buttons */
+  justify-content: center;
+  align-items: center;
 }
 
 .buttonContainer button {

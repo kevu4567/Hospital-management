@@ -21,7 +21,7 @@ const UpdateNurse = () => {
     };
 
     fetchNurses();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // This function updates the nurse information in the state when any input field is changed
   const handleInputChange = (nurseId, fieldName, newValue) => {
@@ -35,30 +35,34 @@ const UpdateNurse = () => {
   };
 
   // This function is called when the update button is clicked
-const handleUpdate = async (nurseId) => {
-  const nurseToUpdate = nurses.find((n) => n.EmployeeID === nurseId);
+  const handleUpdate = async (nurseId) => {
+    const nurseToUpdate = nurses.find((n) => n.EmployeeID === nurseId);
+    const updateData = {
+      phone: nurseToUpdate.phone,
+      address: nurseToUpdate.address,
+    };
 
-  try {
-    const response = await fetch(`http://localhost:3000/Nurses/${nurseId}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(nurseToUpdate),
-    });
+    try {
+      const response = await fetch(`http://localhost:3000/Nurses/${nurseId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updateData),
+      });
 
-    if (!response.ok) {
-      // Parse the JSON error message
-      const errorData = await response.json();
-      console.error("Failed to update nurse", errorData.message);
-      alert(`Failed to update nurse: ${errorData.message}`);
-    } else {
-      // Nurse updated successfully
-      console.log("Nurse updated successfully");
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Failed to update nurse", errorData.message);
+        alert(`Failed to update nurse: ${errorData.message}`);
+      } else {
+        console.log("Nurse updated successfully");
+        // Optionally refresh the nurses data from the server
+        // to reflect the changes in the UI
+      }
+    } catch (error) {
+      console.error("Error updating nurse", error);
+      alert(`Error updating nurse: ${error.message}`);
     }
-  } catch (error) {
-    console.error("Error updating nurse", error);
-    alert(`Error updating nurse: ${error.message}`);
-  }
-};
+  };
 
   return (
     <div style={{ padding: "20px" }}>
@@ -74,15 +78,6 @@ const handleUpdate = async (nurseId) => {
               }}
             >
               Employee ID
-            </th>
-            <th
-              style={{
-                border: "1px solid #ddd",
-                padding: "8px",
-                textAlign: "left",
-              }}
-            >
-              First Name
             </th>
             <th
               style={{
@@ -129,6 +124,15 @@ const handleUpdate = async (nurseId) => {
             >
               Gender
             </th>
+            <th
+              style={{
+                border: "1px solid #ddd",
+                padding: "8px",
+                textAlign: "left",
+              }}
+            > 
+              Option
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -153,11 +157,11 @@ const handleUpdate = async (nurseId) => {
                   type="text"
                   value={nurse.m_name}
                   onChange={(e) =>
-                   handleInputChange(
-                     nurse.EmployeeID,
-                     "m_name",
-                     e.target.value
-                   )
+                    handleInputChange(
+                      nurse.EmployeeID,
+                      "m_name",
+                      e.target.value
+                    )
                   }
                 />
               </td>
@@ -179,11 +183,7 @@ const handleUpdate = async (nurseId) => {
                   type="number"
                   value={nurse.age}
                   onChange={(e) =>
-                    handleInputChange(
-                      nurse.EmployeeID,
-                      "age",
-                      e.target.value
-                    )
+                    handleInputChange(nurse.EmployeeID, "age", e.target.value)
                   }
                 />
               </td>
@@ -203,7 +203,9 @@ const handleUpdate = async (nurseId) => {
                 </select>
               </td>
               <td>
-                <button onClick={() => handleUpdate(nurse.EmployeeID)}>Update</button>
+                <button onClick={() => handleUpdate(nurse.EmployeeID)}>
+                  Update
+                </button>
               </td>
             </tr>
           ))}

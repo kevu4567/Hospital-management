@@ -7,9 +7,9 @@ function NurseHome() {
   // Handler functions for button clicks
   const handleUpdateInfo = () => navigate("/update-info");
   const handleScheduleTime = () => navigate("/schedule-time");
-  const handleCancelTime = () => navigate("/cancel-time");
+  //const handleCancelTime = () => navigate("/cancel-time");
   const handleViewInfo = () => navigate("/view-info");
-  const handleRecordVaccination = () => navigate("/record-vaccination");
+  const handleRecordVaccination = () => navigate("/nurse-vaccine");
 
   return (
     <div style={containerStyle}>
@@ -20,12 +20,6 @@ function NurseHome() {
         </button>
         <button onClick={handleScheduleTime} style={buttonStyle}>
           Schedule
-        </button>
-        <button onClick={handleCancelTime} style={buttonStyle}>
-          Cancel
-        </button>
-        <button onClick={handleViewInfo} style={buttonStyle}>
-          View
         </button>
         <button onClick={handleRecordVaccination} style={buttonStyle}>
           Vaccination

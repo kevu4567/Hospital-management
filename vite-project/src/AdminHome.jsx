@@ -27,7 +27,7 @@ function AdminHome() {
         <button onClick={() => handleNavigation("/update-vaccine")}>
           Update Vac
         </button>
-        <button onClick={() => handleNavigation("/view-nurse")}>
+        <button onClick={() => handleNavigation("/admin-nurse")}>
           View Nurse
         </button>
         <button onClick={() => handleNavigation("/view-patient")}>

@@ -1,5 +1,6 @@
-Hospital Vaccination Database System
-Project Overview
+**Hospital Vaccination Database System**
+
+**Project Overview**
 This project is a collaborative effort that resulted in the creation of a two-tier database system and front-end application for UIH (Universal Immunization Hub). By leveraging React in the backend and Vite in the frontend, our team has provided a solution that simplifies administrative tasks, enhances patient experience, and ensures the real-time tracking of vaccines. This system allows for easy patient registration, appointment scheduling, and record updates, all while streamlining the management of vaccination schedules by nurses.
 
 Features
